@@ -8,6 +8,7 @@ A simple tool to create E-reader compatible EPUB files out of image collections
 <ul>
 <li><a href="#instructions">Instructions</a></li>
 <li><a href="#issues">Issues</a></li>
+<li><a href="todo">To Do</a></li>
 </ul>
 
 <h2 id="instructions">Instructions</h2>
@@ -68,3 +69,9 @@ The lowest quality, 0, looks garbage and I do not reccommend. For a shorter comi
     
     <br>
 * This is still a rather crude application but useable if input files are set up correctly
+
+* Lots of XML writer gore in the code :/
+
+<h2>To Do</h2>
+ 
+* Simplify structures by templating
