@@ -52,8 +52,26 @@ namespace epubGUI
            
 
             Task t1 = Task.Run(() => {
+                if (!settings.Multiple)
+                {
+                    if(settings.Title == "Use Folder Names as Title")
+                    {
+                    
+                        settings.Title = Path.GetDirectoryName(Directory.GetParent( settings.ContentSource).Name);
+                    }
+                    EpubHandler.EPUBParse.BuildEpub(settings);
+                } else
+                {
+                    List<string> directoriesToParse = Directory.GetDirectories(settings.ContentSource).ToList();
 
-                EpubHandler.EPUBParse.BuildEpub(settings);
+                    directoriesToParse.ForEach(dir =>
+                    {
+                        settings.ContentSource = dir;
+                        settings.Title = new DirectoryInfo(dir).Name;
+                        EPUBParse.BuildEpub(settings);
+                    });
+                }
+                
                 
             });
 
@@ -265,6 +283,7 @@ namespace epubGUI
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
                     textBox.Text = folderBrowserDialog.SelectedPath;
+                    txbTitle.Text = "Use Folder Names as Title";
                 }
 
                 

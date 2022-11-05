@@ -24,6 +24,7 @@ namespace EpubHandler
         private static EPUBSettings _settings = new();
 
         private static List<string> _imageRef = new();
+        private static List<string> _chapterPoints = new();
 
         private static XmlWriterSettings _xmlSettings = new XmlWriterSettings()
         {
@@ -73,7 +74,7 @@ namespace EpubHandler
 
 
                 chapter = chapter.Replace("-", "c");
-                string outName = settings.Title + "-" + chapter + "-p" + (i +1).ToString("000") + extension;
+                string outName = settings.Title + "-" + chapter + "-p" + (i).ToString("000") + extension;
 
 
                 File.Move(folder[i], Path.GetDirectoryName(folder[i]) + "/" + outName);
@@ -86,8 +87,8 @@ namespace EpubHandler
 
             for (int i = 0; i < folder.Length; i++)
             {
-                string volume = i.ToString("000");
-                string name = settings.Title + "-(v" + volume + ")";
+                string volume = (i + 1).ToString("000");
+                string name = settings.Title + "-v" + volume;
 
                 Directory.Move(folder[i], directory + "/" + name);
             }
@@ -177,7 +178,7 @@ namespace EpubHandler
 
             string? coverFile = contents.Find(fileName =>
             {
-                return fileName.Contains("p000[");
+                return fileName.Contains("p000");
             });
             writer.WriteAttributeString("content", Path.GetFileNameWithoutExtension(coverFile) + ".html");
 
@@ -235,7 +236,7 @@ namespace EpubHandler
 
             // reference to contents html file
             writer.WriteStartElement("item");
-            writer.WriteAttributeString("href", "contents.html" + "#contentStart");
+            writer.WriteAttributeString("href", "contents.html");
             writer.WriteAttributeString("id", "contents");
             writer.WriteAttributeString("media-type", "application/xhtml+xml");
             writer.WriteEndElement();
@@ -262,6 +263,13 @@ namespace EpubHandler
 
             for (int i = 0; i < fileCount; i++)
             {
+                if(i == 1)
+                {
+                    writer.WriteStartElement("itemref");
+                    writer.WriteAttributeString("idref", "contents");
+                    writer.WriteAttributeString("linear", "yes");
+                    writer.WriteEndElement();
+                }
 
                 writer.WriteStartElement("itemref");
                 writer.WriteAttributeString("idref", "item" + i.ToString());
@@ -301,8 +309,15 @@ namespace EpubHandler
 
         private static void CreateTocFile(string directory, EPUBSettings settings)
         {
+            // Toc.ncx
+            WriteTocxFile(directory, settings);
+            
             // Toc Html
-            //WriteContentHTML(settings);
+            WriteContentHTML(directory, settings); 
+        }
+
+        private static void WriteContentHTML(string directory, EPUBSettings settings)
+        {
             XmlWriter writer = XmlWriter.Create(directory + "/OEBPS/" + "contents.html", _xmlSettings);
 
             // Html Begin
@@ -321,13 +336,39 @@ namespace EpubHandler
             writer.WriteValue("Contents");
             writer.WriteEndElement();
 
+            // Table/ Table Body Start
+            writer.WriteStartElement("table");
+            writer.WriteStartElement("tbody");
+
+            _chapterPoints.ForEach(chapterStart =>
+            {
+                writer.WriteStartElement("tr");
+                writer.WriteStartElement("td");
+                // link tag(a)
+                writer.WriteStartElement("a");
+                writer.WriteAttributeString("href", Path.GetFileName(chapterStart));
+                writer.WriteAttributeString("class", "pginternal");
+                writer.WriteValue( "Chapter " + (_chapterPoints.IndexOf(chapterStart) + 1).ToString());
+                writer.WriteEndElement();
+
+                writer.WriteEndElement();
+                writer.WriteEndElement();
+            });
+
+
+            // Table and Tbody End
+            writer.WriteEndElement();
+            writer.WriteEndElement();
+
+
             writer.WriteEndElement(); // End Body
             writer.WriteEndElement(); // End Html
             writer.Flush();
             writer.Close();
+        }
 
-            // Toc.ncx
-            //WriteTocxFile();
+        private static void WriteTocxFile(string directory, EPUBSettings settings)
+        {
             XmlWriter writeToc = XmlWriter.Create(directory + "/OEBPS/" + "toc.ncx", _xmlSettings);
             writeToc.WriteDocType("ncx", "-//NISO//DTD ncx 2005-1//EN", "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd", null);
             // ncx Start
@@ -365,7 +406,7 @@ namespace EpubHandler
             // If chapter nr (c00X) is not 1, set chapterNR to that nr
             string? chNumTry = filesInDirectory.Find(filename =>
             {
-                return Regex.IsMatch( Path.GetFileName(filename), _chapterPattern1 ) || Regex.IsMatch(filename, _chapterPattern2 ); 
+                return Regex.IsMatch(Path.GetFileName(filename), _chapterPattern1) || Regex.IsMatch(filename, _chapterPattern2);
             });
             if (chNumTry != null)
             {
@@ -395,6 +436,9 @@ namespace EpubHandler
             writeToc.WriteEndElement(); // End content
             writeToc.WriteEndElement(); // End Navpoint
 
+            // Add file reference to chapter set
+            _chapterPoints.Add(firstFile);
+
             filesInDirectory.ForEach(file =>
             {
                 if (Regex.IsMatch(Path.GetFileName(file), _chapterPattern1) || Regex.IsMatch(Path.GetFileName(file), _chapterPattern2))
@@ -415,7 +459,7 @@ namespace EpubHandler
                         writeToc.WriteEndElement(); // End Navlabel
                                                     // content
 
-                    
+                        _chapterPoints.Add(file);
                         writeToc.WriteStartElement("content");
                         writeToc.WriteAttributeString("src", Path.GetFileName(file));
                         writeToc.WriteEndElement(); // End content
