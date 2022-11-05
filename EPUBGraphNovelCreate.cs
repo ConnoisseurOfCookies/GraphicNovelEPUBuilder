@@ -1,5 +1,7 @@
 using EpubHandler;
 using System.Runtime.CompilerServices;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace epubGUI
 {
@@ -60,9 +62,13 @@ namespace epubGUI
             this.Cursor = Cursors.AppStarting;
             this.btnGenerate.Enabled = false;
             this.btnGenerate.Cursor = Cursors.No;
+            this.lblWhile.Visible = true;
+            this.lblDone.Visible = false;
 
             await t1;
 
+            this.lblDone.Visible = true;
+            this.lblWhile.Visible = false;
             this.btnGenerate.Cursor = Cursors.Default;
             this.btnGenerate.Enabled = true;
             this.Cursor = Cursors.Default;
@@ -165,6 +171,122 @@ namespace epubGUI
         private void barCompression_Scroll(object sender, EventArgs e)
         {
             this.lblCompression.Text = "Quality: " + this.barCompression.Value.ToString();
+        }
+
+        private void lblDone_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Form prompt = new Form()
+            {
+                Width = 500,
+                Height = 200,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = "Select Folder",
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label textLabel = new Label() { Left = 50, Top = 20, Text = "Choose Folder" };
+            TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
+            Button btnFolderSelect = new Button() { Text = "Select Folder", Left = 245, Width = 100, Top = 90 };
+            Button btnBeginRenaming = new Button() { Text = "Begin Renaming", Left = 350, Width = 115, Top = 90, DialogResult = DialogResult.OK };
+            CheckBox multi = new CheckBox() { Checked = false, Left = 50, Top = 90, Text = "Multiple" };
+            ToolTip toolTip = new ToolTip() { };
+
+            toolTip.SetToolTip(multi, "Perform operation on multiple folders in directory");
+
+
+            btnFolderSelect.Click += (sender, e) => { 
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+
+                if(folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    textBox.Text = folderBrowserDialog.SelectedPath;
+                }   
+
+                
+            };
+
+            btnBeginRenaming.Click += (sender, e) =>
+            {
+                if(Directory.Exists(textBox.Text))
+                {
+                    if (multi.Checked)
+                    {
+                        List<string> folders = Directory.GetDirectories(textBox.Text).ToList();
+
+                        foreach (string folder in folders)
+                        {
+                            EPUBParse.RenameFilesInFolder(folder, new EPUBSettings { Title = "Berserk" });
+                        }
+                    }
+
+                    EpubHandler.EPUBParse.RenameFilesInFolder(textBox.Text, new EPUBSettings { Title = "Berserk" });
+                }
+            };
+
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(btnFolderSelect);
+            prompt.Controls.Add(textLabel);
+            prompt.Controls.Add(multi);
+            prompt.AcceptButton = btnFolderSelect;
+            prompt.Controls.Add(btnBeginRenaming);
+      
+            
+
+            string s = prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+
+
+        }
+
+        private void btnFolderNamechanger_Click(object sender, EventArgs e)
+        {
+            Form prompt = new Form()
+            {
+                Width = 500,
+                Height = 200,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = "Select Folder",
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label textLabel = new Label() { Left = 50, Top = 20, Text = "Choose Folder" };
+            TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
+            Button btnFolderSelect = new Button() { Text = "Select Folder", Left = 240, Width = 100, Top = 100 };
+            Button btnCloseForm = new Button() { Text = "Begin Renaming", Left = 350, Width = 115, Top = 100, DialogResult = DialogResult.OK };
+
+            btnFolderSelect.Click += (sender, e) => {
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    textBox.Text = folderBrowserDialog.SelectedPath;
+                }
+
+                
+            };
+
+
+            btnCloseForm.Click += (sender, e) =>
+            {
+                if (Directory.Exists(textBox.Text))
+                {
+
+
+                            EPUBParse.RenameFoldersInFolder(textBox.Text, new EPUBSettings { Title = "Berserk" });
+   
+                 
+                }
+            };
+
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(btnFolderSelect);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = btnFolderSelect;
+            prompt.Controls.Add(btnCloseForm);
+
+            string s = prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
     }
 }

@@ -5,14 +5,23 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Drawing.Imaging;
 using System.Drawing;
 using Image = System.Drawing.Image;
+using System.Text.RegularExpressions;
+using System.IO;
 
 namespace EpubHandler
 {
 
     public static class EPUBParse
     {
+        // Regex Patterns
+        private static readonly string _pagePattern = @"p\d\d\d\";
+        private static readonly string _chapterPattern1 = @"c\d\d\d";
+        private static readonly string _chapterPattern2 = @"-\d\d\d";
+        private static readonly string _volumePattern = @"v\d\d";
+        //
+        // Fields
+        //
         private static EPUBSettings _settings = new();
-
 
         private static List<string> _imageRef = new();
 
@@ -22,9 +31,9 @@ namespace EpubHandler
             IndentChars = ("   "),
             CloseOutput = true
         };
-
-
-
+        //
+        // Public Methods
+        //
         public static void BuildEpub(EPUBSettings settings)
         {
             _settings = settings;
@@ -42,6 +51,48 @@ namespace EpubHandler
 
         }
 
+        public static void RenameFilesInFolder(string directory, EPUBSettings settings)
+        {
+            string[] folder = Directory.GetFiles(directory);
+
+            for (int i = 0; i < folder.Length; i++)
+            {
+                string name = Path.GetFileName(folder[i]).Replace(" ", "");
+                string extension = Path.GetExtension(folder[i]);
+
+                string chapter = "";
+                if (Regex.Match(name, _chapterPattern1).Success)
+                {
+                    chapter = Regex.Match(name, _chapterPattern1).Value;
+                }
+                else
+                {
+                    chapter = Regex.Match(name, _chapterPattern2).Value;
+                }
+
+
+
+                chapter = chapter.Replace("-", "c");
+                string outName = settings.Title + "-" + chapter + "-p" + i.ToString("000") + extension;
+
+
+                File.Move(folder[i], Path.GetDirectoryName(folder[i]) + "/" + outName);
+            }
+        }
+
+        public static void RenameFoldersInFolder(string directory, EPUBSettings settings)
+        {
+            string[] folder = Directory.GetDirectories(directory);
+
+            for (int i = 0; i < folder.Length; i++)
+            {
+                string volume = i.ToString("000");
+                string name = settings.Title + "-(v" + volume + ")";
+
+                Directory.Move(folder[i], directory + "/" + name);
+            }
+        }
+
         public static void FolderToEpub(EPUBSettings settings)
         {
             ZipFile.CreateFromDirectory(settings.OutputDirectory + "/work", settings.OutputDirectory + "/" + settings.Title + ".epub");
@@ -57,7 +108,9 @@ namespace EpubHandler
         {
             ZipFile.CreateFromDirectory(fromDirectory, toDirectory + ".epub");
         }
-
+        //
+        // Private Methods
+        //
         private static void DirectoryStructureCreate(string directory)
         {
             var MainDirectory = Directory.CreateDirectory(directory);
@@ -245,7 +298,6 @@ namespace EpubHandler
             writer.Flush();
             writer.Close();
         }
-
 
         private static void CreateHtmlFile(string directory, string filename, string id, string title)
         {

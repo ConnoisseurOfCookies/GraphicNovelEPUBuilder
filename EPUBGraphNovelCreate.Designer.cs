@@ -90,13 +90,18 @@
             this.lblBusy = new System.Windows.Forms.Label();
             this.barCompression = new System.Windows.Forms.TrackBar();
             this.lblCompression = new System.Windows.Forms.Label();
+            this.lblWhile = new System.Windows.Forms.Label();
+            this.lblDone = new System.Windows.Forms.Label();
+            this.btnFilenameChanger = new System.Windows.Forms.Button();
+            this.btnFolderNamechanger = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.coverPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barCompression)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(706, 393);
+            this.btnClose.Location = new System.Drawing.Point(708, 432);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(110, 40);
             this.btnClose.TabIndex = 0;
@@ -106,7 +111,7 @@
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(590, 393);
+            this.btnGenerate.Location = new System.Drawing.Point(592, 432);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(110, 40);
             this.btnGenerate.TabIndex = 1;
@@ -248,7 +253,7 @@
             // coverPreview
             // 
             this.coverPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.coverPreview.Location = new System.Drawing.Point(12, 202);
+            this.coverPreview.Location = new System.Drawing.Point(12, 241);
             this.coverPreview.Name = "coverPreview";
             this.coverPreview.Size = new System.Drawing.Size(291, 231);
             this.coverPreview.TabIndex = 20;
@@ -256,7 +261,7 @@
             // 
             // btnCoverPrev
             // 
-            this.btnCoverPrev.Location = new System.Drawing.Point(12, 155);
+            this.btnCoverPrev.Location = new System.Drawing.Point(12, 194);
             this.btnCoverPrev.Name = "btnCoverPrev";
             this.btnCoverPrev.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnCoverPrev.Size = new System.Drawing.Size(110, 35);
@@ -332,8 +337,8 @@
             this.lblBusy.AutoSize = true;
             this.lblBusy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblBusy.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblBusy.ForeColor = System.Drawing.Color.RosyBrown;
-            this.lblBusy.Location = new System.Drawing.Point(306, 338);
+            this.lblBusy.ForeColor = System.Drawing.Color.DimGray;
+            this.lblBusy.Location = new System.Drawing.Point(306, 360);
             this.lblBusy.Margin = new System.Windows.Forms.Padding(0);
             this.lblBusy.Name = "lblBusy";
             this.lblBusy.Size = new System.Drawing.Size(508, 41);
@@ -343,7 +348,7 @@
             // 
             // barCompression
             // 
-            this.barCompression.Location = new System.Drawing.Point(12, 110);
+            this.barCompression.Location = new System.Drawing.Point(12, 149);
             this.barCompression.Maximum = 100;
             this.barCompression.Name = "barCompression";
             this.barCompression.Size = new System.Drawing.Size(297, 45);
@@ -355,7 +360,7 @@
             // lblCompression
             // 
             this.lblCompression.AutoSize = true;
-            this.lblCompression.Location = new System.Drawing.Point(12, 92);
+            this.lblCompression.Location = new System.Drawing.Point(12, 131);
             this.lblCompression.Name = "lblCompression";
             this.lblCompression.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lblCompression.Size = new System.Drawing.Size(63, 15);
@@ -363,12 +368,75 @@
             this.lblCompression.Text = "Quality: 20";
             this.lblCompression.Click += new System.EventHandler(this.label1_Click);
             // 
+            // lblWhile
+            // 
+            this.lblWhile.AutoSize = true;
+            this.lblWhile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblWhile.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblWhile.ForeColor = System.Drawing.Color.DimGray;
+            this.lblWhile.Location = new System.Drawing.Point(315, 401);
+            this.lblWhile.Margin = new System.Windows.Forms.Padding(0);
+            this.lblWhile.Name = "lblWhile";
+            this.lblWhile.Size = new System.Drawing.Size(143, 19);
+            this.lblWhile.TabIndex = 27;
+            this.lblWhile.Text = "This May Take a While";
+            this.lblWhile.Visible = false;
+            // 
+            // lblDone
+            // 
+            this.lblDone.AutoSize = true;
+            this.lblDone.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblDone.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblDone.ForeColor = System.Drawing.Color.DimGray;
+            this.lblDone.Location = new System.Drawing.Point(309, 360);
+            this.lblDone.Margin = new System.Windows.Forms.Padding(0);
+            this.lblDone.Name = "lblDone";
+            this.lblDone.Size = new System.Drawing.Size(117, 41);
+            this.lblDone.TabIndex = 28;
+            this.lblDone.Text = "Done!!!";
+            this.lblDone.Visible = false;
+            this.lblDone.Click += new System.EventHandler(this.lblDone_Click);
+            // 
+            // btnFilenameChanger
+            // 
+            this.btnFilenameChanger.Location = new System.Drawing.Point(13, 98);
+            this.btnFilenameChanger.Name = "btnFilenameChanger";
+            this.btnFilenameChanger.Size = new System.Drawing.Size(140, 30);
+            this.btnFilenameChanger.TabIndex = 29;
+            this.btnFilenameChanger.Text = "File Names";
+            this.btnFilenameChanger.UseVisualStyleBackColor = true;
+            this.btnFilenameChanger.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // btnFolderNamechanger
+            // 
+            this.btnFolderNamechanger.Location = new System.Drawing.Point(153, 98);
+            this.btnFolderNamechanger.Name = "btnFolderNamechanger";
+            this.btnFolderNamechanger.Size = new System.Drawing.Size(140, 30);
+            this.btnFolderNamechanger.TabIndex = 30;
+            this.btnFolderNamechanger.Text = "Folder Names";
+            this.btnFolderNamechanger.UseVisualStyleBackColor = true;
+            this.btnFolderNamechanger.Click += new System.EventHandler(this.btnFolderNamechanger_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 77);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(246, 15);
+            this.label1.TabIndex = 31;
+            this.label1.Text = "Bulk Rename Files or Folders *Recommended";
+            // 
             // EPUBGraphNovelCreate
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(824, 514);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnFolderNamechanger);
+            this.Controls.Add(this.btnFilenameChanger);
+            this.Controls.Add(this.lblDone);
+            this.Controls.Add(this.lblWhile);
             this.Controls.Add(this.lblCompression);
             this.Controls.Add(this.barCompression);
             this.Controls.Add(this.lblBusy);
@@ -433,5 +501,10 @@
         private Label lblBusy;
         private TrackBar barCompression;
         private Label lblCompression;
+        private Label lblWhile;
+        private Label lblDone;
+        private Button btnFilenameChanger;
+        private Button btnFolderNamechanger;
+        private Label label1;
     }
 }
