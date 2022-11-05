@@ -73,7 +73,7 @@ namespace EpubHandler
 
 
                 chapter = chapter.Replace("-", "c");
-                string outName = settings.Title + "-" + chapter + "-p" + i.ToString("000") + extension;
+                string outName = settings.Title + "-" + chapter + "-p" + (i +1).ToString("000") + extension;
 
 
                 File.Move(folder[i], Path.GetDirectoryName(folder[i]) + "/" + outName);
@@ -109,7 +109,7 @@ namespace EpubHandler
             ZipFile.CreateFromDirectory(fromDirectory, toDirectory + ".epub");
         }
         //
-        // Private Methods
+        // Private Main Methods
         //
         private static void DirectoryStructureCreate(string directory)
         {
@@ -299,46 +299,10 @@ namespace EpubHandler
             writer.Close();
         }
 
-        private static void CreateHtmlFile(string directory, string filename, string id, string title)
-        {
-            XmlWriter writer = XmlWriter.Create(directory + "/OEBPS/" + id + ".html", _xmlSettings);
-            writer.WriteStartElement("html", "http://www.w3.org/1999/xhtml");
-
-            writer.WriteStartElement("head"); // Start Head
-
-            writer.WriteElementString("title", title);
-
-            // CSS Ref
-            writer.WriteStartElement("link");
-            writer.WriteAttributeString("href", "pgepub.css");
-            writer.WriteAttributeString("rel", "stylesheet");
-            writer.WriteEndElement();
-
-            writer.WriteEndElement(); // End Head
-
-            writer.WriteStartElement("body"); // Start Body
-
-            writer.WriteStartElement("div"); // Start Div
-            writer.WriteAttributeString("style", "text-align: center");
-
-            // Image
-            writer.WriteStartElement("img");
-            writer.WriteAttributeString("src", filename);
-            writer.WriteAttributeString("alt", id);
-            writer.WriteAttributeString("class", "x-ebookmaker-cover");
-            writer.WriteEndElement();
-
-            writer.WriteEndElement(); // End Div
-            writer.WriteEndElement(); // End Body
-            writer.WriteEndElement(); // End Html
-
-            writer.Flush();
-            writer.Close();
-        }
-
         private static void CreateTocFile(string directory, EPUBSettings settings)
         {
             // Toc Html
+            //WriteContentHTML(settings);
             XmlWriter writer = XmlWriter.Create(directory + "/OEBPS/" + "contents.html", _xmlSettings);
 
             // Html Begin
@@ -363,6 +327,7 @@ namespace EpubHandler
             writer.Close();
 
             // Toc.ncx
+            //WriteTocxFile();
             XmlWriter writeToc = XmlWriter.Create(directory + "/OEBPS/" + "toc.ncx", _xmlSettings);
             writeToc.WriteDocType("ncx", "-//NISO//DTD ncx 2005-1//EN", "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd", null);
             // ncx Start
@@ -378,20 +343,49 @@ namespace EpubHandler
             writeToc.WriteAttributeString("content", "1");
             writeToc.WriteEndElement();
 
+            writeToc.WriteStartElement("meta");
+            writeToc.WriteAttributeString("name", "dtb:generator");
+            writeToc.WriteAttributeString("content", "Graphic Novel Generator by Karl Martinsson (Rags)");
+            writeToc.WriteEndElement();
+
             writeToc.WriteEndElement(); // head End
-                                        // docTitle start
+            // docTitle start
             writeToc.WriteStartElement("docTitle");
             writeToc.WriteElementString("text", settings.Title);
             writeToc.WriteEndElement(); // End docTitle
-                                        // navMap
+            // navMap
             writeToc.WriteStartElement("navMap");
             // navPoint
+
+            int chapterNR = 1;
+            List<string> filesInDirectory = Directory.GetFiles(directory + "/OEBPS").ToList();
+            //
+            //  Nav Chapters
+            //
+            // If chapter nr (c00X) is not 1, set chapterNR to that nr
+            string? chNumTry = filesInDirectory.Find(filename =>
+            {
+                return Regex.IsMatch( Path.GetFileName(filename), _chapterPattern1 ) || Regex.IsMatch(filename, _chapterPattern2 ); 
+            });
+            if (chNumTry != null)
+            {
+                bool is1Match = Regex.IsMatch(Path.GetFileName(chNumTry), _chapterPattern1);
+                bool is2Match = Regex.IsMatch(Path.GetFileName(chNumTry), _chapterPattern2);
+
+                string first = Regex.Match(chNumTry, _chapterPattern1).Value.Replace("c", "");
+                string second = Regex.Match(chNumTry, _chapterPattern2).Value.Replace("-", "");
+
+                chapterNR = Regex.IsMatch(Path.GetFileName(chNumTry), _chapterPattern1) ?
+                    int.Parse(Regex.Match(chNumTry, _chapterPattern1).Value.Replace("c", "")) :
+                    int.Parse(Regex.Match(chNumTry, _chapterPattern2).Value.Replace("-", ""));
+            }
+
             writeToc.WriteStartElement("navPoint");
-            writeToc.WriteAttributeString("id", "np-1");
-            writeToc.WriteAttributeString("playOrder", "1");
+            writeToc.WriteAttributeString("id", "np-" + chapterNR.ToString());
+            writeToc.WriteAttributeString("playOrder", chapterNR.ToString());
             // navLabel
             writeToc.WriteStartElement("navLabel");
-            writeToc.WriteElementString("text", settings.Title);
+            writeToc.WriteElementString("text", "Chapter " + chapterNR.ToString());
             writeToc.WriteEndElement(); // End Navlabel
                                         // content
 
@@ -400,6 +394,40 @@ namespace EpubHandler
             writeToc.WriteAttributeString("src", Path.GetFileName(firstFile));
             writeToc.WriteEndElement(); // End content
             writeToc.WriteEndElement(); // End Navpoint
+
+            filesInDirectory.ForEach(file =>
+            {
+                if (Regex.IsMatch(Path.GetFileName(file), _chapterPattern1) || Regex.IsMatch(Path.GetFileName(file), _chapterPattern2))
+                {
+                    int chapNrForFile = Regex.IsMatch(Path.GetFileName(file), _chapterPattern1) ?
+                        int.Parse(Regex.Match(file, _chapterPattern1).Value.Replace("c", "")) :
+                        int.Parse(Regex.Match(file, _chapterPattern2).Value.Replace("-", ""));
+                    // If chapter nr has changed, add to content list, else continue
+                    if (chapterNR != chapNrForFile)
+                    {
+                        chapterNR = chapNrForFile;
+                        writeToc.WriteStartElement("navPoint");
+                        writeToc.WriteAttributeString("id", "np-" + chapterNR.ToString());
+                        writeToc.WriteAttributeString("playOrder", chapterNR.ToString());
+                        // navLabel
+                        writeToc.WriteStartElement("navLabel");
+                        writeToc.WriteElementString("text", "Chapter " + chapterNR.ToString());
+                        writeToc.WriteEndElement(); // End Navlabel
+                                                    // content
+
+                    
+                        writeToc.WriteStartElement("content");
+                        writeToc.WriteAttributeString("src", Path.GetFileName(file));
+                        writeToc.WriteEndElement(); // End content
+                        writeToc.WriteEndElement(); // End Navpoint
+
+                    }
+
+                }
+
+            });
+
+
             writeToc.WriteEndElement(); // End navMap
             writeToc.WriteEndElement(); // End ncx
             writeToc.Flush();
@@ -425,7 +453,22 @@ namespace EpubHandler
             mimetype.Write(mimeString);
             mimetype.Close();
         }
-
+        //
+        // Private SubMethods
+        //
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
+        
         private static void FormatAndSaveImages(string directory, string contentSource)
         {
             // Take image set and convert to jpeg
@@ -474,20 +517,43 @@ namespace EpubHandler
             _imageRef = imageRef;
 
         }
-
-        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        
+        private static void CreateHtmlFile(string directory, string filename, string id, string title)
         {
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
-            foreach (ImageCodecInfo codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
-                {
-                    return codec;
-                }
-            }
-            return null;
-        }
+            XmlWriter writer = XmlWriter.Create(directory + "/OEBPS/" + id + ".html", _xmlSettings);
+            writer.WriteStartElement("html", "http://www.w3.org/1999/xhtml");
 
+            writer.WriteStartElement("head"); // Start Head
+
+            writer.WriteElementString("title", title);
+
+            // CSS Ref
+            writer.WriteStartElement("link");
+            writer.WriteAttributeString("href", "pgepub.css");
+            writer.WriteAttributeString("rel", "stylesheet");
+            writer.WriteEndElement();
+
+            writer.WriteEndElement(); // End Head
+
+            writer.WriteStartElement("body"); // Start Body
+
+            writer.WriteStartElement("div"); // Start Div
+            writer.WriteAttributeString("style", "text-align: center");
+
+            // Image
+            writer.WriteStartElement("img");
+            writer.WriteAttributeString("src", filename);
+            writer.WriteAttributeString("alt", id);
+            writer.WriteAttributeString("class", "x-ebookmaker-cover");
+            writer.WriteEndElement();
+
+            writer.WriteEndElement(); // End Div
+            writer.WriteEndElement(); // End Body
+            writer.WriteEndElement(); // End Html
+
+            writer.Flush();
+            writer.Close();
+        }
     }
 }
 

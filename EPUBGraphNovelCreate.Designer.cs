@@ -35,36 +35,62 @@
             treeNode3});
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("If compiling from multiple folders folder name will be appended to Title");
             System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("If multiple, make sure that Cover photo is first (p000)");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Folder Structure", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Bulk renaming folders follows Title-Volume naming convention");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Folder Structure", new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode4,
             treeNode5,
-            treeNode6});
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Optional can be anything as long as it doesn\'t match another pattern");
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Name(opt)-Chapter-Volume(opt)-Page-(opt)", new System.Windows.Forms.TreeNode[] {
-            treeNode8});
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Chapters: -000, -001 or c000, c001 etc.");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Pages: p000, p001, etc.");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Volume: (v01), (v02), etc.");
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Consider using a bulk renaming utility if dealing with a high volume");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Labeling", new System.Windows.Forms.TreeNode[] {
-            treeNode9,
+            treeNode6,
+            treeNode7});
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Optional can be anything as long as it doesn\'t match another pattern");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Name(opt)-Chapter-Page-(opt)", new System.Windows.Forms.TreeNode[] {
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Chapters: -000, -001 or c000, c001 etc.");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Pages: p000, p001, etc.");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Volume: (v01), (v02), etc.");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Consider using a bulk renaming utility if dealing with a high volume");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Labeling(files)", new System.Windows.Forms.TreeNode[] {
             treeNode10,
             treeNode11,
             treeNode12,
-            treeNode13});
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Lossy compression, jpeg format, images only");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("More Quality = Bigger files, Kindle Email Limits you to only 50mb");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("20, the default, looks OK and puts a 200+ page novel(300mb+) down to about 45mb");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("0 looks atrocious, not recommended");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("100 is basically no compression at all, works for shorter comics");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Compression", new System.Windows.Forms.TreeNode[] {
-            treeNode15,
+            treeNode13,
+            treeNode14});
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Lossy compression, jpeg format, images only");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("More Quality = Bigger files, Kindle Email Limits you to only 50mb");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("20, the default, looks OK and puts a 200+ page novel(300mb+) down to about 45mb");
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("0 looks atrocious, not recommended");
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("100 is basically no compression at all, works for shorter comics");
+            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Compression", new System.Windows.Forms.TreeNode[] {
             treeNode16,
             treeNode17,
             treeNode18,
-            treeNode19});
+            treeNode19,
+            treeNode20});
+            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("1. Select source folder");
+            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("2. Make sure folder only has image files");
+            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("3. Make sure files are ordered");
+            System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("4. If you want to be able to navigate chapters use chapter naming convention");
+            System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("5. If you need to rename files from multiple folders select the parent folder and" +
+        " tick the \"Multiple\" box");
+            System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("File Names", new System.Windows.Forms.TreeNode[] {
+            treeNode22,
+            treeNode23,
+            treeNode24,
+            treeNode25,
+            treeNode26});
+            System.Windows.Forms.TreeNode treeNode28 = new System.Windows.Forms.TreeNode("1. Select Folder");
+            System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("2. Make sure folders are ordered");
+            System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("3. Specify Title");
+            System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("4. Voila!");
+            System.Windows.Forms.TreeNode treeNode32 = new System.Windows.Forms.TreeNode("Folder Names", new System.Windows.Forms.TreeNode[] {
+            treeNode28,
+            treeNode29,
+            treeNode30,
+            treeNode31});
+            System.Windows.Forms.TreeNode treeNode33 = new System.Windows.Forms.TreeNode("Bulk Renaming tools", new System.Windows.Forms.TreeNode[] {
+            treeNode27,
+            treeNode32});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EPUBGraphNovelCreate));
             this.btnClose = new System.Windows.Forms.Button();
             this.btnGenerate = new System.Windows.Forms.Button();
@@ -286,38 +312,66 @@
             treeNode5.Text = "If compiling from multiple folders folder name will be appended to Title";
             treeNode6.Name = "Node11";
             treeNode6.Text = "If multiple, make sure that Cover photo is first (p000)";
-            treeNode7.Name = "Node0";
-            treeNode7.Text = "Folder Structure";
-            treeNode8.Name = "Node7";
-            treeNode8.Text = "Optional can be anything as long as it doesn\'t match another pattern";
-            treeNode9.Name = "Node6";
-            treeNode9.Text = "Name(opt)-Chapter-Volume(opt)-Page-(opt)";
-            treeNode10.Name = "Node8";
-            treeNode10.Text = "Chapters: -000, -001 or c000, c001 etc.";
-            treeNode11.Name = "Node5";
-            treeNode11.Text = "Pages: p000, p001, etc.";
-            treeNode12.Name = "Node9";
-            treeNode12.Text = "Volume: (v01), (v02), etc.";
-            treeNode13.Name = "Node19";
-            treeNode13.Text = "Consider using a bulk renaming utility if dealing with a high volume";
-            treeNode14.Name = "Node4";
-            treeNode14.Text = "Labeling";
-            treeNode15.Name = "Node17";
-            treeNode15.Text = "Lossy compression, jpeg format, images only";
-            treeNode16.Name = "Node13";
-            treeNode16.Text = "More Quality = Bigger files, Kindle Email Limits you to only 50mb";
-            treeNode17.Name = "Node14";
-            treeNode17.Text = "20, the default, looks OK and puts a 200+ page novel(300mb+) down to about 45mb";
-            treeNode18.Name = "Node15";
-            treeNode18.Text = "0 looks atrocious, not recommended";
-            treeNode19.Name = "Node16";
-            treeNode19.Text = "100 is basically no compression at all, works for shorter comics";
-            treeNode20.Name = "Node12";
-            treeNode20.Text = "Compression";
+            treeNode7.Name = "Node20";
+            treeNode7.Text = "Bulk renaming folders follows Title-Volume naming convention";
+            treeNode8.Name = "Node0";
+            treeNode8.Text = "Folder Structure";
+            treeNode9.Name = "Node7";
+            treeNode9.Text = "Optional can be anything as long as it doesn\'t match another pattern";
+            treeNode10.Name = "Node6";
+            treeNode10.Text = "Name(opt)-Chapter-Page-(opt)";
+            treeNode11.Name = "Node8";
+            treeNode11.Text = "Chapters: -000, -001 or c000, c001 etc.";
+            treeNode12.Name = "Node5";
+            treeNode12.Text = "Pages: p000, p001, etc.";
+            treeNode13.Name = "Node9";
+            treeNode13.Text = "Volume: (v01), (v02), etc.";
+            treeNode14.Name = "Node19";
+            treeNode14.Text = "Consider using a bulk renaming utility if dealing with a high volume";
+            treeNode15.Name = "Node4";
+            treeNode15.Text = "Labeling(files)";
+            treeNode16.Name = "Node17";
+            treeNode16.Text = "Lossy compression, jpeg format, images only";
+            treeNode17.Name = "Node13";
+            treeNode17.Text = "More Quality = Bigger files, Kindle Email Limits you to only 50mb";
+            treeNode18.Name = "Node14";
+            treeNode18.Text = "20, the default, looks OK and puts a 200+ page novel(300mb+) down to about 45mb";
+            treeNode19.Name = "Node15";
+            treeNode19.Text = "0 looks atrocious, not recommended";
+            treeNode20.Name = "Node16";
+            treeNode20.Text = "100 is basically no compression at all, works for shorter comics";
+            treeNode21.Name = "Node12";
+            treeNode21.Text = "Compression";
+            treeNode22.Name = "Node24";
+            treeNode22.Text = "1. Select source folder";
+            treeNode23.Name = "Node25";
+            treeNode23.Text = "2. Make sure folder only has image files";
+            treeNode24.Name = "Node26";
+            treeNode24.Text = "3. Make sure files are ordered";
+            treeNode25.Name = "Node27";
+            treeNode25.Text = "4. If you want to be able to navigate chapters use chapter naming convention";
+            treeNode26.Name = "Node28";
+            treeNode26.Text = "5. If you need to rename files from multiple folders select the parent folder and" +
+    " tick the \"Multiple\" box";
+            treeNode27.Name = "Node22";
+            treeNode27.Text = "File Names";
+            treeNode28.Name = "Node29";
+            treeNode28.Text = "1. Select Folder";
+            treeNode29.Name = "Node30";
+            treeNode29.Text = "2. Make sure folders are ordered";
+            treeNode30.Name = "Node31";
+            treeNode30.Text = "3. Specify Title";
+            treeNode31.Name = "Node32";
+            treeNode31.Text = "4. Voila!";
+            treeNode32.Name = "Node23";
+            treeNode32.Text = "Folder Names";
+            treeNode33.Name = "Node21";
+            treeNode33.Text = "Bulk Renaming tools";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7,
-            treeNode14,
-            treeNode20});
+            treeNode8,
+            treeNode15,
+            treeNode21,
+            treeNode33});
             this.treeView1.Size = new System.Drawing.Size(339, 243);
             this.treeView1.TabIndex = 22;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
